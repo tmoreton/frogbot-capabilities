@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "repository": "tmoreton/frogbot-capabilities",
+  "release": "skills-v1",
+  "tools": [
+    {
+      "id": "web",
+      "name": "Web reader",
+      "description": "Open and summarize a specific web page.",
+      "provider": "stan",
+      "enabled": true
+    },
+    {
+      "id": "web_search",
+      "name": "Web search",
+      "description": "Search the live web and return relevant sources.",
+      "provider": "agentcore-gateway",
+      "enabled": true
+    },
+    {
+      "id": "calculator",
+      "name": "Calculator",
+      "description": "Do exact arithmetic safely.",
+      "provider": "frogbot",
+      "enabled": true
+    },
+    {
+      "id": "current_time",
+      "name": "World clock",
+      "description": "Check the current time in any timezone.",
+      "provider": "frogbot",
+      "enabled": true
+    },
+    {
+      "id": "x_search",
+      "name": "X / Twitter search",
+      "description": "Search recent public posts on X.",
+      "provider": "agentcore-gateway",
+      "credential": "FrogBotXApi",
+      "enabled": true
+    },
+    {
+      "id": "youtube_search",
+      "name": "YouTube research",
+      "description": "Find public videos and inspect their metadata and comments.",
+      "provider": "agentcore-gateway",
+      "credential": "FrogBotYouTubeApi",
+      "enabled": true
+    }
+  ],
+  "skills": [
+    {
+      "id": "planner",
+      "version": 1,
+      "name": "Planner",
+      "description": "Turn goals into practical next steps.",
+      "path": "skills/planner/SKILL.md",
+      "requiredToolIds": []
+    },
+    {
+      "id": "researcher",
+      "version": 1,
+      "name": "Researcher",
+      "description": "Investigate questions and synthesize evidence.",
+      "path": "skills/researcher/SKILL.md",
+      "requiredToolIds": ["web", "web_search"]
+    },
+    {
+      "id": "writer",
+      "version": 1,
+      "name": "Writer",
+      "description": "Draft polished, audience-aware copy.",
+      "path": "skills/writer/SKILL.md",
+      "requiredToolIds": []
+    },
+    {
+      "id": "x-research",
+      "version": 1,
+      "name": "X / Twitter Research",
+      "description": "Find recent posts and turn social conversation into sourced insight.",
+      "path": "skills/x-research/SKILL.md",
+      "requiredToolIds": ["x_search"]
+    },
+    {
+      "id": "youtube-research",
+      "version": 1,
+      "name": "YouTube Research",
+      "description": "Find useful videos and compare their public details and discussion.",
+      "path": "skills/youtube-research/SKILL.md",
+      "requiredToolIds": ["youtube_search"]
+    }
+  ]
+}
