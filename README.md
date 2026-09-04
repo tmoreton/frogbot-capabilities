@@ -8,7 +8,9 @@ This repository is the reviewed publishing source for FrogBot skills and externa
 
 The catalog also contains a reviewed runtime binding for every tool. Gateway-backed tools can be
 added or changed without an app release; FrogBot discovers their permitted operation names from
-the catalog. Stan features and local utilities use a deliberately small runtime allowlist.
+the catalog. AgentCore Browser and Code Interpreter provide broad managed capabilities without
+adding task-specific application code. Stan features and local utilities use a deliberately small
+runtime allowlist.
 
 FrogBot loads skill releases by immutable Git tag. Updating a skill requires a version bump and a new release tag, so existing bots keep the behavior they were shared with.
 

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "repository": "tmoreton/frogbot-capabilities",
-  "release": "skills-v4",
+  "release": "skills-v5",
   "tools": [
     {
       "id": "web",
@@ -78,6 +78,14 @@
       "description": "Run Python, JavaScript, or TypeScript in an isolated AgentCore sandbox.",
       "provider": "agentcore",
       "runtime": { "kind": "agentcore", "name": "code_interpreter" },
+      "enabled": true
+    },
+    {
+      "id": "browser",
+      "name": "Interactive browser",
+      "description": "Open websites, navigate pages, interact with controls, and extract visible information.",
+      "provider": "agentcore",
+      "runtime": { "kind": "agentcore", "name": "browser" },
       "enabled": true
     }
   ],
@@ -168,6 +176,54 @@
       "name": "Teacher",
       "description": "Explain difficult subjects at the learner's level and check understanding.",
       "path": "skills/teacher/SKILL.md",
+      "requiredToolIds": []
+    },
+    {
+      "id": "browser-research",
+      "version": 1,
+      "name": "Browser Research",
+      "description": "Investigate interactive or multi-page websites and report traceable findings.",
+      "path": "skills/browser-research/SKILL.md",
+      "requiredToolIds": ["browser", "web_search"]
+    },
+    {
+      "id": "fact-checker",
+      "version": 1,
+      "name": "Fact Checker",
+      "description": "Check concrete claims against reliable sources and explain the verdict.",
+      "path": "skills/fact-checker/SKILL.md",
+      "requiredToolIds": ["web", "web_search"]
+    },
+    {
+      "id": "meeting-prep",
+      "version": 1,
+      "name": "Meeting Prep",
+      "description": "Turn a meeting goal and attendee context into a focused briefing.",
+      "path": "skills/meeting-prep/SKILL.md",
+      "requiredToolIds": ["web_search"]
+    },
+    {
+      "id": "product-manager",
+      "version": 1,
+      "name": "Product Manager",
+      "description": "Shape product ideas into user problems, decisions, and testable requirements.",
+      "path": "skills/product-manager/SKILL.md",
+      "requiredToolIds": []
+    },
+    {
+      "id": "project-manager",
+      "version": 1,
+      "name": "Project Manager",
+      "description": "Organize an outcome into owners, milestones, risks, and a maintained action list.",
+      "path": "skills/project-manager/SKILL.md",
+      "requiredToolIds": ["task_list"]
+    },
+    {
+      "id": "summarizer",
+      "version": 1,
+      "name": "Summarizer",
+      "description": "Compress long material into an accurate summary tailored to the reader.",
+      "path": "skills/summarizer/SKILL.md",
       "requiredToolIds": []
     }
   ]
