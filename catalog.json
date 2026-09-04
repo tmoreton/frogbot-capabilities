@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "repository": "tmoreton/frogbot-capabilities",
-  "release": "skills-v3",
+  "release": "skills-v4",
   "tools": [
     {
       "id": "web",
@@ -42,7 +42,7 @@
       "provider": "agentcore-gateway",
       "credential": "FrogBotXApi",
       "runtime": { "kind": "gateway", "operations": ["x_search_recent"] },
-      "enabled": true
+      "enabled": false
     },
     {
       "id": "youtube_search",
@@ -54,7 +54,7 @@
         "kind": "gateway",
         "operations": ["youtube_search", "youtube_video_details", "youtube_comments"]
       },
-      "enabled": true
+      "enabled": false
     },
     {
       "id": "task_list",
@@ -70,6 +70,14 @@
       "description": "Hand a focused subtask to a fresh agent and bring back its conclusion.",
       "provider": "stan",
       "runtime": { "kind": "stan_subagent", "name": "generalist" },
+      "enabled": true
+    },
+    {
+      "id": "code_interpreter",
+      "name": "Code interpreter",
+      "description": "Run Python, JavaScript, or TypeScript in an isolated AgentCore sandbox.",
+      "provider": "agentcore",
+      "runtime": { "kind": "agentcore", "name": "code_interpreter" },
       "enabled": true
     }
   ],
@@ -129,6 +137,14 @@
       "description": "Compare options, test assumptions, and turn evidence into a recommendation.",
       "path": "skills/analyst/SKILL.md",
       "requiredToolIds": ["calculator"]
+    },
+    {
+      "id": "data-analyst",
+      "version": 1,
+      "name": "Data Analyst",
+      "description": "Inspect data, calculate results, and verify conclusions with executable code.",
+      "path": "skills/data-analyst/SKILL.md",
+      "requiredToolIds": ["calculator", "code_interpreter"]
     },
     {
       "id": "editor",
