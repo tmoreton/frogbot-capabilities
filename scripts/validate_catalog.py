@@ -7,6 +7,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 ID_PATTERN = re.compile(r"^[a-z0-9][a-z0-9-]{0,63}$")
+TOOL_ID_PATTERN = re.compile(r"^[a-z0-9][a-z0-9_]{0,63}$")
 
 
 def fail(message: str) -> None:
@@ -24,7 +25,11 @@ def main() -> int:
         fail("catalog tools and skills must be arrays")
 
     tool_ids = {tool.get("id") for tool in tools}
-    if None in tool_ids or len(tool_ids) != len(tools):
+    if (
+        None in tool_ids
+        or len(tool_ids) != len(tools)
+        or any(not isinstance(tool_id, str) or not TOOL_ID_PATTERN.fullmatch(tool_id) for tool_id in tool_ids)
+    ):
         fail("tool IDs must be present and unique")
 
     skill_ids: set[str] = set()
