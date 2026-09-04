@@ -1,13 +1,14 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "repository": "tmoreton/frogbot-capabilities",
-  "release": "skills-v2",
+  "release": "skills-v3",
   "tools": [
     {
       "id": "web",
       "name": "Web reader",
       "description": "Open and summarize a specific web page.",
       "provider": "stan",
+      "runtime": { "kind": "stan_builtin", "name": "web_fetch" },
       "enabled": true
     },
     {
@@ -15,6 +16,7 @@
       "name": "Web search",
       "description": "Search the live web and return relevant sources.",
       "provider": "agentcore-gateway",
+      "runtime": { "kind": "gateway", "operations": ["WebSearch"] },
       "enabled": true
     },
     {
@@ -22,6 +24,7 @@
       "name": "Calculator",
       "description": "Do exact arithmetic safely.",
       "provider": "frogbot",
+      "runtime": { "kind": "local", "name": "calculator" },
       "enabled": true
     },
     {
@@ -29,6 +32,7 @@
       "name": "World clock",
       "description": "Check the current time in any timezone.",
       "provider": "frogbot",
+      "runtime": { "kind": "local", "name": "current_time" },
       "enabled": true
     },
     {
@@ -37,6 +41,7 @@
       "description": "Search recent public posts on X.",
       "provider": "agentcore-gateway",
       "credential": "FrogBotXApi",
+      "runtime": { "kind": "gateway", "operations": ["x_search_recent"] },
       "enabled": true
     },
     {
@@ -45,6 +50,26 @@
       "description": "Find public videos and inspect their metadata and comments.",
       "provider": "agentcore-gateway",
       "credential": "FrogBotYouTubeApi",
+      "runtime": {
+        "kind": "gateway",
+        "operations": ["youtube_search", "youtube_video_details", "youtube_comments"]
+      },
+      "enabled": true
+    },
+    {
+      "id": "task_list",
+      "name": "Task tracker",
+      "description": "Keep a live checklist during longer, multi-step work.",
+      "provider": "stan",
+      "runtime": { "kind": "stan_plugin", "name": "todos" },
+      "enabled": true
+    },
+    {
+      "id": "delegate",
+      "name": "Focused delegate",
+      "description": "Hand a focused subtask to a fresh agent and bring back its conclusion.",
+      "provider": "stan",
+      "runtime": { "kind": "stan_subagent", "name": "generalist" },
       "enabled": true
     }
   ],
@@ -88,6 +113,46 @@
       "description": "Find useful videos and compare their public details and discussion.",
       "path": "skills/youtube-research/SKILL.md",
       "requiredToolIds": ["youtube_search"]
+    },
+    {
+      "id": "deep-research",
+      "version": 1,
+      "name": "Deep Research",
+      "description": "Break down broad questions and produce a sourced, decision-ready synthesis.",
+      "path": "skills/deep-research/SKILL.md",
+      "requiredToolIds": ["web", "web_search", "task_list", "delegate"]
+    },
+    {
+      "id": "analyst",
+      "version": 1,
+      "name": "Analyst",
+      "description": "Compare options, test assumptions, and turn evidence into a recommendation.",
+      "path": "skills/analyst/SKILL.md",
+      "requiredToolIds": ["calculator"]
+    },
+    {
+      "id": "editor",
+      "version": 1,
+      "name": "Editor",
+      "description": "Improve clarity, structure, and tone while preserving the author's meaning.",
+      "path": "skills/editor/SKILL.md",
+      "requiredToolIds": []
+    },
+    {
+      "id": "brainstormer",
+      "version": 1,
+      "name": "Brainstormer",
+      "description": "Generate distinct ideas, pressure-test them, and identify the strongest directions.",
+      "path": "skills/brainstormer/SKILL.md",
+      "requiredToolIds": []
+    },
+    {
+      "id": "teacher",
+      "version": 1,
+      "name": "Teacher",
+      "description": "Explain difficult subjects at the learner's level and check understanding.",
+      "path": "skills/teacher/SKILL.md",
+      "requiredToolIds": []
     }
   ]
 }
