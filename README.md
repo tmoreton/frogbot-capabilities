@@ -1,35 +1,64 @@
-# FrogBot Capabilities
+# FroggyBot Skills
 
-This repository is the reviewed publishing source for FrogBot skills and external tool schemas.
+This is the public home for FroggyBot’s website, reviewed skills, and tool definitions.
 
-- `skills/` contains instruction-only Agent Skills. Community skills may not include executable scripts.
-- `tools/` contains narrowly scoped OpenAPI schemas deployed behind Amazon Bedrock AgentCore Gateway.
-- `catalog.json` is the machine-readable catalog consumed by FrogBot.
+- [froggybot.com](https://froggybot.com) is built from `site/` and published with GitHub Pages after every push to `main`.
+- `skills/` contains readable, instruction-only ways of working.
+- `tools/` contains narrowly scoped OpenAPI definitions for reviewed external services.
+- `catalog.json` is the machine-readable directory consumed by the website and FroggyBot app.
 
-Every reviewed entry also supplies the public directory metadata shown on froggybot.com: its category,
-author, tags, featured status, and—for tools—the actions people can expect it to perform.
+The Expo web app that mirrors iOS is separate at [app.froggybot.com](https://app.froggybot.com). The public site’s `/invite` page preserves invite parameters and hands them to that app.
 
-The catalog also contains a reviewed runtime binding for every tool. Gateway-backed tools can be
-added or changed without an app release; FrogBot discovers their permitted operation names from
-the catalog. AgentCore Browser and Code Interpreter provide broad managed capabilities without
-adding task-specific application code. Stan features and local utilities use a deliberately small
-runtime allowlist.
+## Repository map
 
-FrogBot loads skill releases by immutable Git tag. Updating a skill requires a version bump and a new release tag, so existing bots keep the behavior they were shared with.
+```text
+skills/<skill-id>/SKILL.md   One public skill per folder
+tools/<provider>/            Reviewed external API definitions
+site/                        Static froggybot.com source
+scripts/validate_catalog.py  Catalog and package safety checks
+scripts/build_site.py        GitHub Pages build
+tests/                       Website structure checks
+docs/                        Catalog decisions and maintainer notes
+```
 
-## Add a skill
+## Contribute a skill
 
-1. Copy an existing directory under `skills/`.
-2. Write a concise `SKILL.md` with `name` and `description` frontmatter.
-3. Add its metadata to `catalog.json` and increment the integer version.
-4. Run `python3 scripts/validate_catalog.py`.
-5. Open a pull request.
+1. Search the [public library](https://froggybot.com/library/) and existing pull requests.
+2. Fork this repository and copy the closest folder under `skills/`.
+3. Give the folder a lowercase, hyphenated ID such as `trip-planner`.
+4. Write a concise `SKILL.md` with only `name` and `description` in its frontmatter.
+5. Add the public metadata and reviewed `requiredToolIds` to `catalog.json`.
+6. Run the checks below and open a pull request.
 
-The website links directly back to this repository, so accepted contributions appear in the public
-directory and then in the app without a mobile release.
+```bash
+python3 scripts/validate_catalog.py
+python3 -m unittest discover -s tests
+python3 scripts/build_site.py
+```
 
-Shared and official skills are immutable releases. In FrogBot, a user can customize any skill by
-creating a private editable copy, so published behavior stays stable while personal variations are
-fully editable and versioned.
+Read [CONTRIBUTING.md](CONTRIBUTING.md) for the complete review rules and a copyable catalog example. If you only have an idea, use the [skill request form](https://github.com/tmoreton/frogbot-skills/issues/new?template=skill-request.yml).
 
-Executable integrations belong in AgentCore Gateway, not in a skill package. Skills may declare the reviewed tool IDs they expect through `allowed-tools`.
+## Skill rules
+
+- Skills are instructions and optional static Markdown, text, or JSON references.
+- Skills cannot contain executable code, binaries, secrets, tokens, or hidden remote instructions.
+- Each skill should solve one recognizable user outcome and explain its important boundary.
+- Required tools are declared once in `catalog.json`; skill frontmatter does not repeat runtime bindings.
+- Existing behavior is immutable. Bump `version` before changing instructions that users may rely on.
+
+## Propose a tool
+
+Tools can access services or take actions, so contributors begin with a [tool request](https://github.com/tmoreton/frogbot-skills/issues/new?template=tool-request.yml). A proposal must describe the exact actions, data involved, authentication, external side effects, and least permissions needed.
+
+A tool is enabled only after its server-side binding and credentials are deployed. Secrets and executable integration code never live in this public repository or the app bundle.
+
+## Publishing model
+
+Every accepted catalog change does two things without a mobile release:
+
+1. GitHub Pages rebuilds the public directory from the new `catalog.json`.
+2. FroggyBot’s AWS backend refreshes the same reviewed catalog and makes available entries selectable in the app.
+
+Bots remain pinned to the skill version they selected. A user can create a private, editable copy without changing the public original.
+
+See [docs/CAPABILITY_AUDIT.md](docs/CAPABILITY_AUDIT.md) for the current keep, retire, and next-tool decisions.

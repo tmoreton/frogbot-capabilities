@@ -1,33 +1,94 @@
 # Contributing
 
-FrogBot skills are portable instructions, not executable plugins.
+FroggyBot Skills accepts small, reviewable additions that help a person or group reach a concrete outcome.
 
-Submissions must:
+## Choose the right contribution
 
-- contain a single `SKILL.md` and optional static references or templates;
-- avoid scripts, binaries, secrets, access tokens, and hidden remote instructions;
-- use only tool IDs already present in `catalog.json`;
-- explain when the skill should and should not be used;
-- avoid requesting broader access than the skill needs.
+- **Skill:** readable instructions that shape how a FroggyBot approaches work.
+- **Tool request:** a proposal for reading from or acting in another service.
+- **Website or documentation:** a focused improvement to `site/`, `README.md`, or `docs/`.
 
-## Submit a skill
+Do not put executable integrations inside a skill. Tool execution, credentials, and permissions belong in FroggyBot’s reviewed server-side runtime.
 
-1. Fork this repository and copy the closest example in `skills/`.
-2. Keep the package instruction-only: `SKILL.md` plus optional Markdown, text, or JSON references.
-3. Add the skill to `catalog.json` with a category, author, up to six tags, and only the reviewed tools it needs.
-4. Run `python3 scripts/validate_catalog.py`.
-5. Open a pull request using the checklist. Review covers usefulness, clarity, safety, and least-privilege tool access.
+## Add a skill
 
-Not ready to write the skill? Open a skill request from the repository’s Issues tab.
+1. Search `catalog.json`, open pull requests, and the [live library](https://froggybot.com/library/) for overlap.
+2. Copy the closest existing skill folder and rename it with a lowercase, hyphenated ID.
+3. Keep the package instruction-only: one `SKILL.md` plus optional `.md`, `.txt`, or `.json` references.
+4. Write a description that states the outcome and when the skill applies.
+5. Include only guidance that changes the quality, safety, or consistency of the result.
+6. Add the catalog entry and run the checks.
+
+A minimal `SKILL.md`:
+
+```markdown
+---
+name: example-skill
+description: Turn a specific input into a useful, clearly bounded outcome.
+---
+
+# Example Skill
+
+Use this skill when ...
+
+1. Confirm the inputs that materially affect the result.
+2. Produce the outcome in the shortest useful form.
+3. State any uncertainty or action that needs approval.
+
+Do not ...
+```
+
+Its matching `catalog.json` entry:
+
+```json
+{
+  "id": "example-skill",
+  "version": 1,
+  "name": "Example Skill",
+  "description": "Turn a specific input into a useful, clearly bounded outcome.",
+  "category": "Planning",
+  "author": "Your GitHub name",
+  "tags": ["example", "outcome"],
+  "path": "skills/example-skill/SKILL.md",
+  "requiredToolIds": []
+}
+```
+
+Use at most six meaningful tags. Add `featured: true` only when maintainers have chosen the skill as a primary starting point. A skill may name only tool IDs already present in `catalog.json`.
+
+## Change an existing skill
+
+Preserve its ID. If instructions change behavior, increment its integer `version` and update the catalog release. Existing tagged versions remain available to bots that already selected them.
 
 ## Propose a tool
 
-Tools are actions backed by FroggyBot-controlled runtime bindings. Start with a tool request describing
-the user outcome, exact actions, data accessed, authentication method, and whether it can change external
-state. A tool is listed only after its server-side binding and permissions are reviewed and deployed.
+Open the tool request before writing an OpenAPI definition. Include:
 
-Public submissions are reviewed before appearing in the store. A rejected submission remains usable as a private or link-only skill in the creator's FrogBot account.
+- the user outcome and exact actions;
+- what information is read, stored, created, or changed;
+- the authentication method and where credentials will live;
+- whether actions are read-only, sandboxed, or interactive;
+- rate limits, cost, and failure behavior; and
+- the smallest permissions that support the outcome.
 
-New tools must include a runtime binding in `catalog.json`. Gateway bindings list exact operation
-IDs from a reviewed target. Stan and local bindings are restricted by the validator and require a
-runtime review before a new executable implementation can be selected.
+Tool proposals are listed only after their server-side binding has been security-reviewed, deployed, and tested. Community pull requests never add secrets.
+
+## Run the checks
+
+```bash
+python3 scripts/validate_catalog.py
+python3 -m unittest discover -s tests
+python3 scripts/build_site.py
+```
+
+Open `dist/index.html` through a local HTTP server when changing the site:
+
+```bash
+python3 -m http.server 8000 --directory dist
+```
+
+Then check the homepage, library search and filters, mobile layout, contribution links, legal pages, and invite forwarding.
+
+## Review checklist
+
+Reviewers check that the contribution is useful, distinct, concise, safe, least-privilege, and understandable without private context. Broad catch-all skills, duplicated behavior, hidden instructions, and tools without a deployed binding are not accepted into the public catalog.

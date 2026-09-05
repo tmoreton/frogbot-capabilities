@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
-  "repository": "tmoreton/frogbot-capabilities",
-  "release": "skills-v5",
+  "repository": "tmoreton/frogbot-skills",
+  "release": "skills-v6",
   "tools": [
     {
       "id": "web",
@@ -271,17 +271,6 @@
       "requiredToolIds": []
     },
     {
-      "id": "browser-research",
-      "version": 1,
-      "name": "Browser Research",
-      "description": "Investigate interactive or multi-page websites and report traceable findings.",
-      "category": "Research",
-      "author": "FroggyBot",
-      "tags": ["browser", "websites"],
-      "path": "skills/browser-research/SKILL.md",
-      "requiredToolIds": ["browser", "web_search"]
-    },
-    {
       "id": "fact-checker",
       "version": 1,
       "name": "Fact Checker",
@@ -324,6 +313,54 @@
       "tags": ["projects", "milestones"],
       "path": "skills/project-manager/SKILL.md",
       "requiredToolIds": ["task_list"]
+    },
+    {
+      "id": "trip-planner",
+      "version": 1,
+      "name": "Group Trip Planner",
+      "description": "Turn everyone’s dates, preferences, and budget into a practical shared trip plan.",
+      "category": "Groups",
+      "author": "FroggyBot",
+      "tags": ["travel", "itinerary", "budget", "groups"],
+      "featured": true,
+      "path": "skills/trip-planner/SKILL.md",
+      "requiredToolIds": ["web", "web_search", "calculator", "task_list"]
+    },
+    {
+      "id": "group-decision",
+      "version": 1,
+      "name": "Group Decision Helper",
+      "description": "Gather preferences, compare workable options, and help a group reach a clear decision.",
+      "category": "Groups",
+      "author": "FroggyBot",
+      "tags": ["decisions", "preferences", "comparison", "groups"],
+      "featured": true,
+      "path": "skills/group-decision/SKILL.md",
+      "requiredToolIds": ["calculator"]
+    },
+    {
+      "id": "event-planner",
+      "version": 1,
+      "name": "Event Planner",
+      "description": "Build a shared event plan with decisions, owners, timing, costs, and a live checklist.",
+      "category": "Groups",
+      "author": "FroggyBot",
+      "tags": ["events", "schedule", "checklist", "budget"],
+      "featured": true,
+      "path": "skills/event-planner/SKILL.md",
+      "requiredToolIds": ["web_search", "calculator", "task_list"]
+    },
+    {
+      "id": "shared-budget",
+      "version": 1,
+      "name": "Shared Budget",
+      "description": "Create a transparent group budget, compare scenarios, and split costs fairly.",
+      "category": "Groups",
+      "author": "FroggyBot",
+      "tags": ["budget", "costs", "splits", "spreadsheet"],
+      "featured": true,
+      "path": "skills/shared-budget/SKILL.md",
+      "requiredToolIds": ["calculator", "code_interpreter"]
     },
     {
       "id": "summarizer",

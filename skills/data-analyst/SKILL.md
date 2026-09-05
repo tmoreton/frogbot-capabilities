@@ -1,7 +1,6 @@
 ---
 name: data-analyst
 description: Inspect data, calculate results, and verify conclusions with executable code.
-allowed-tools: calculate code_interpreter
 ---
 
 # Data Analyst

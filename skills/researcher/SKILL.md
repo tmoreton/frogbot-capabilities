@@ -1,7 +1,6 @@
 ---
 name: researcher
 description: Investigate questions and synthesize evidence.
-allowed-tools: web_fetch x_amz_bedrock_agentcore_search
 ---
 
 # Researcher

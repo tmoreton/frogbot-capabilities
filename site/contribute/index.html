@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contribute a skill — FroggyBot</title>
+  <meta name="description" content="A start-to-finish guide to proposing and publishing a FroggyBot skill or tool.">
+  <link rel="icon" href="/assets/favicon.png"><link rel="stylesheet" href="/styles/base.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header"><a class="wordmark" href="/"><img src="/assets/frogbot.png" alt=""><span>FroggyBot</span></a><nav class="site-nav"><a href="/library/">Skills & tools</a><a class="button-secondary" href="https://app.froggybot.com/">Open app</a></nav></header>
+  <main class="doc-page" id="main">
+    <p class="eyebrow">Open contribution guide</p>
+    <h1>Add a skill people can trust.</h1>
+    <p>FroggyBot skills are short, readable instructions—not executable plugins. A contributor describes a useful way of working, chooses only the reviewed tools it needs, and opens a pull request.</p>
+
+    <h2>Before you start</h2>
+    <ul>
+      <li>Search the <a href="/library/">library</a> and existing pull requests so you do not duplicate a skill.</li>
+      <li>Choose one clear user outcome. “Plan a group trip” is stronger than “be helpful.”</li>
+      <li>Never include scripts, binaries, secrets, tokens, or instructions fetched from an unreviewed URL.</li>
+    </ul>
+
+    <h2>Submit a skill</h2>
+    <ol>
+      <li><a href="https://github.com/tmoreton/frogbot-skills/fork">Fork FroggyBot Skills</a> on GitHub.</li>
+      <li>Copy the closest example in <code>skills/</code> into a new lowercase, hyphenated folder.</li>
+      <li>Edit its <code>SKILL.md</code>. Include a short name and description, when to use it, a compact process, and its important limits.</li>
+      <li>Add one entry to <code>catalog.json</code>. Use no more than six useful tags and list only reviewed tool IDs the skill truly requires.</li>
+      <li>Run <code>python3 scripts/validate_catalog.py</code>.</li>
+      <li>Open a pull request. The checklist will guide the usefulness, clarity, safety, and least-privilege review.</li>
+    </ol>
+    <p><a class="button" href="https://github.com/tmoreton/frogbot-skills/issues/new?template=skill-request.yml">Request a skill instead</a></p>
+
+    <h2>Propose a tool</h2>
+    <p>Tools can access services or take actions, so they require server-side implementation and a stricter review. Start with a tool request that states:</p>
+    <ul>
+      <li>the user outcome and exact actions;</li>
+      <li>what information the tool reads, stores, or changes;</li>
+      <li>how authentication works and where credentials live;</li>
+      <li>whether each action is read-only, sandboxed, or interactive; and</li>
+      <li>the smallest permissions that can support the use case.</li>
+    </ul>
+    <p><a class="button-secondary" href="https://github.com/tmoreton/frogbot-skills/issues/new?template=tool-request.yml">Propose a tool</a></p>
+
+    <h2>What happens after review</h2>
+    <p>Accepted skills are versioned and published from this repository. FroggyBot refreshes the catalog without an app release, while bots already using a skill remain pinned to the version they selected. Users can make a private editable copy without changing the public original.</p>
+  </main>
+  <footer class="site-footer"><span>© 2026 FroggyBot</span><nav class="footer-links"><a href="/">Home</a><a href="/library/">Library</a><a href="https://github.com/tmoreton/frogbot-skills">GitHub</a></nav></footer>
+</body>
+</html>

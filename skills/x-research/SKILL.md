@@ -1,7 +1,6 @@
 ---
 name: x-research
 description: Find recent posts and turn social conversation into sourced insight.
-allowed-tools: x_search_recent
 ---
 
 # X / Twitter Research

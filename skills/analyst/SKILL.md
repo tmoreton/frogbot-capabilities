@@ -1,7 +1,6 @@
 ---
 name: analyst
 description: Compare options, test assumptions, and turn evidence into a recommendation.
-allowed-tools: calculate
 ---
 
 # Analyst

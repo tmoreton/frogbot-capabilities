@@ -1,7 +1,6 @@
 ---
 name: deep-research
 description: Break down broad questions and produce a sourced, decision-ready synthesis.
-allowed-tools: web_fetch x_amz_bedrock_agentcore_search todo_write generalist
 ---
 
 # Deep Research

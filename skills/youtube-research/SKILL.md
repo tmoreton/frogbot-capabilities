@@ -1,7 +1,6 @@
 ---
 name: youtube-research
 description: Find useful videos and compare their public details and discussion.
-allowed-tools: youtube_search youtube_video_details youtube_comments
 ---
 
 # YouTube Research

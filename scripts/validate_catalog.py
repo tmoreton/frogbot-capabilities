@@ -18,6 +18,7 @@ RUNTIME_NAMES = {
 }
 MAX_TAGS = 6
 TOOL_RISKS = {"read", "sandbox", "interactive"}
+REPOSITORY = "tmoreton/frogbot-skills"
 
 
 def fail(message: str) -> None:
@@ -58,6 +59,10 @@ def main() -> int:
     catalog = json.loads((ROOT / "catalog.json").read_text())
     if catalog.get("schemaVersion") != 2:
         fail("catalog schemaVersion must be 2")
+    if catalog.get("repository") != REPOSITORY:
+        fail(f"catalog repository must be {REPOSITORY}")
+    if not re.fullmatch(r"skills-v[1-9][0-9]*", str(catalog.get("release", ""))):
+        fail("catalog release must look like skills-v6")
 
     tools = catalog.get("tools")
     skills = catalog.get("skills")
@@ -74,6 +79,12 @@ def main() -> int:
 
     for tool in tools:
         validate_public_metadata(tool, actions=True)
+        for field, maximum in (("name", 80), ("description", 240), ("provider", 80)):
+            value = tool.get(field)
+            if not isinstance(value, str) or not value.strip() or len(value.strip()) > maximum:
+                fail(f"{tool.get('id')} must include a short {field}")
+        if not isinstance(tool.get("enabled"), bool):
+            fail(f"{tool.get('id')} enabled must be true or false")
         if tool.get("risk") not in TOOL_RISKS:
             fail(f"{tool.get('id')} must declare a supported risk")
         runtime = tool.get("runtime")
@@ -104,13 +115,25 @@ def main() -> int:
             fail(f"duplicate skill ID: {skill_id}")
         skill_ids.add(skill_id)
         validate_public_metadata(skill)
+        for field, maximum in (("name", 80), ("description", 240)):
+            value = skill.get(field)
+            if not isinstance(value, str) or not value.strip() or len(value.strip()) > maximum:
+                fail(f"{skill_id} must include a short {field}")
+        version = skill.get("version")
+        if not isinstance(version, int) or isinstance(version, bool) or version < 1:
+            fail(f"{skill_id} version must be a positive integer")
 
-        path = ROOT / skill.get("path", "")
+        expected_path = f"skills/{skill_id}/SKILL.md"
+        if skill.get("path") != expected_path:
+            fail(f"{skill_id} path must be {expected_path}")
+        path = ROOT / expected_path
         if not path.is_file() or path.name != "SKILL.md":
             fail(f"missing SKILL.md for {skill_id}")
         content = path.read_text()
         if not content.startswith("---\n") or f"\nname: {skill_id}\n" not in content:
             fail(f"invalid frontmatter for {skill_id}")
+        if "\nallowed-tools:" in content:
+            fail(f"{skill_id} must declare required tools only in catalog.json")
 
         skill_root = path.parent
         for candidate in skill_root.rglob("*"):
@@ -120,9 +143,16 @@ def main() -> int:
                 fail(f"unsupported skill file type: {candidate}")
 
         required = skill.get("requiredToolIds", [])
+        if not isinstance(required, list) or len(required) != len(set(required)):
+            fail(f"{skill_id} requiredToolIds must be a unique list")
         unknown = set(required) - tool_ids
         if unknown:
             fail(f"{skill_id} references unknown tools: {sorted(unknown)}")
+
+    packaged_skill_ids = {path.parent.name for path in (ROOT / "skills").glob("*/SKILL.md")}
+    orphaned = packaged_skill_ids - skill_ids
+    if orphaned:
+        fail(f"skill packages missing from catalog.json: {sorted(orphaned)}")
 
     print(f"Validated {len(skills)} skills and {len(tools)} tools.")
     return 0
