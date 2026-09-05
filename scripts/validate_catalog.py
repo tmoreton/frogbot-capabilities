@@ -17,6 +17,7 @@ RUNTIME_NAMES = {
     "stan_subagent": {"generalist"},
 }
 MAX_TAGS = 6
+TOOL_RISKS = {"read", "sandbox", "interactive"}
 
 
 def fail(message: str) -> None:
@@ -73,6 +74,8 @@ def main() -> int:
 
     for tool in tools:
         validate_public_metadata(tool, actions=True)
+        if tool.get("risk") not in TOOL_RISKS:
+            fail(f"{tool.get('id')} must declare a supported risk")
         runtime = tool.get("runtime")
         if not isinstance(runtime, dict):
             fail(f"{tool.get('id')} must define a runtime binding")
