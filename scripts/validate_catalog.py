@@ -16,10 +16,41 @@ RUNTIME_NAMES = {
     "stan_plugin": {"todos"},
     "stan_subagent": {"generalist"},
 }
+MAX_TAGS = 6
 
 
 def fail(message: str) -> None:
     raise ValueError(message)
+
+
+def validate_public_metadata(item: dict, *, actions: bool = False) -> None:
+    item_id = item.get("id", "item")
+    for field, maximum in (("category", 48), ("author", 80)):
+        value = item.get(field)
+        if not isinstance(value, str) or not value.strip() or len(value.strip()) > maximum:
+            fail(f"{item_id} must include a short {field}")
+    tags = item.get("tags")
+    if (
+        not isinstance(tags, list)
+        or len(tags) > MAX_TAGS
+        or any(not isinstance(tag, str) or not tag.strip() or len(tag.strip()) > 32 for tag in tags)
+    ):
+        fail(f"{item_id} must include at most {MAX_TAGS} short tags")
+    if actions:
+        values = item.get("actions")
+        if (
+            not isinstance(values, list)
+            or not 1 <= len(values) <= 8
+            or any(
+                not isinstance(action, str)
+                or not action.strip()
+                or len(action.strip()) > 80
+                for action in values
+            )
+        ):
+            fail(f"{item_id} must include 1 to 8 short actions")
+    if "featured" in item and not isinstance(item["featured"], bool):
+        fail(f"{item_id} featured must be true or false")
 
 
 def main() -> int:
@@ -41,6 +72,7 @@ def main() -> int:
         fail("tool IDs must be present and unique")
 
     for tool in tools:
+        validate_public_metadata(tool, actions=True)
         runtime = tool.get("runtime")
         if not isinstance(runtime, dict):
             fail(f"{tool.get('id')} must define a runtime binding")
@@ -68,6 +100,7 @@ def main() -> int:
         if skill_id in skill_ids:
             fail(f"duplicate skill ID: {skill_id}")
         skill_ids.add(skill_id)
+        validate_public_metadata(skill)
 
         path = ROOT / skill.get("path", "")
         if not path.is_file() or path.name != "SKILL.md":

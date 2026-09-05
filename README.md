@@ -6,6 +6,9 @@ This repository is the reviewed publishing source for FrogBot skills and externa
 - `tools/` contains narrowly scoped OpenAPI schemas deployed behind Amazon Bedrock AgentCore Gateway.
 - `catalog.json` is the machine-readable catalog consumed by FrogBot.
 
+Every reviewed entry also supplies the public directory metadata shown on froggybot.com: its category,
+author, tags, featured status, and—for tools—the actions people can expect it to perform.
+
 The catalog also contains a reviewed runtime binding for every tool. Gateway-backed tools can be
 added or changed without an app release; FrogBot discovers their permitted operation names from
 the catalog. AgentCore Browser and Code Interpreter provide broad managed capabilities without
@@ -21,6 +24,9 @@ FrogBot loads skill releases by immutable Git tag. Updating a skill requires a v
 3. Add its metadata to `catalog.json` and increment the integer version.
 4. Run `python3 scripts/validate_catalog.py`.
 5. Open a pull request.
+
+The website links directly back to this repository, so accepted contributions appear in the public
+directory and then in the app without a mobile release.
 
 Shared and official skills are immutable releases. In FrogBot, a user can customize any skill by
 creating a private editable copy, so published behavior stays stable while personal variations are
