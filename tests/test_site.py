@@ -6,6 +6,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SITE = ROOT / "site"
+OUTPUT = ROOT / "dist"
 
 
 class SiteTests(unittest.TestCase):
@@ -36,6 +37,15 @@ class SiteTests(unittest.TestCase):
     def test_catalog_points_at_current_repository(self) -> None:
         catalog = json.loads((ROOT / "catalog.json").read_text())
         self.assertEqual(catalog["repository"], "tmoreton/frogbot-skills")
+
+    def test_build_publishes_every_skill_document(self) -> None:
+        source_skills = sorted(
+            path.relative_to(ROOT) for path in (ROOT / "skills").glob("*/SKILL.md")
+        )
+        published_skills = sorted(
+            path.relative_to(OUTPUT) for path in (OUTPUT / "skills").glob("*/SKILL.md")
+        )
+        self.assertEqual(published_skills, source_skills)
 
 
 if __name__ == "__main__":

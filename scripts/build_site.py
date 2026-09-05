@@ -17,6 +17,7 @@ def main() -> None:
     if OUTPUT.exists():
         shutil.rmtree(OUTPUT)
     shutil.copytree(SOURCE, OUTPUT)
+    shutil.copytree(ROOT / "skills", OUTPUT / "skills")
     shutil.copy2(ROOT / "catalog.json", OUTPUT / "catalog.json")
     (OUTPUT / ".nojekyll").touch()
     print(f"Built GitHub Pages site in {OUTPUT}")
