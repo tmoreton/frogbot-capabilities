@@ -4,7 +4,7 @@ This is the public home for FroggyBot’s website, reviewed skills, and tool def
 
 - [froggybot.com](https://froggybot.com) is built from `site/` and published with GitHub Pages after every push to `main`.
 - `skills/` contains readable, instruction-only ways of working.
-- `tools/` contains narrowly scoped OpenAPI definitions for reviewed external services.
+- `tools/` contains the canonical, narrowly scoped OpenAPI definitions for reviewed external services.
 - `catalog.json` is the machine-readable directory consumed by the website and FroggyBot app.
 
 The Expo web app that mirrors iOS is separate at [app.froggybot.com](https://app.froggybot.com). The public site’s `/invite` page preserves invite parameters and hands them to that app.
@@ -14,6 +14,7 @@ The Expo web app that mirrors iOS is separate at [app.froggybot.com](https://app
 ```text
 skills/<skill-id>/SKILL.md   One public skill per folder
 tools/<provider>/            Reviewed external API definitions
+infrastructure/              Declarative deployment for provider-specific gateway targets
 site/                        Static froggybot.com source
 scripts/validate_catalog.py  Catalog and package safety checks
 scripts/build_site.py        GitHub Pages build
@@ -51,6 +52,20 @@ Read [CONTRIBUTING.md](CONTRIBUTING.md) for the complete review rules and a copy
 Tools can access services or take actions, so contributors begin with a [tool request](https://github.com/tmoreton/frogbot-skills/issues/new?template=tool-request.yml). A proposal must describe the exact actions, data involved, authentication, external side effects, and least permissions needed.
 
 A tool is enabled only after its server-side binding and credentials are deployed. Secrets and executable integration code never live in this public repository or the app bundle.
+
+## What stays in the app backend
+
+This repository owns capability definitions: names, descriptions, skill instructions, tool actions, runtime bindings, and external OpenAPI schemas. The private app repository keeps only the generic machinery needed to use them safely:
+
+- catalog signature, validation, caching, and version pinning;
+- user-created private skills and sharing records;
+- reviewed runtime implementations such as the calculator and browser session manager;
+- the allowlist that prevents a public catalog entry from activating arbitrary code; and
+- AWS credentials, permissions, and deployed gateway resources.
+
+Those pieces cannot be downloaded as community content because they execute with trusted server permissions. The app contains no fallback copy of this public catalog.
+
+The X and YouTube targets are the one deployment exception to the main AgentCore project file. AgentCore project schema v1 cannot express an API key's header/query location or prefix, so `infrastructure/gateway-targets.yaml` owns those two targets declaratively next to their canonical schemas. Remove that template when the project schema supports these fields; do not copy the schemas back into the app repository.
 
 ## Publishing model
 

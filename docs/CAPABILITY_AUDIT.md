@@ -35,10 +35,11 @@ These cover the dominant guidance, information, writing, analysis, learning, and
 
 These new skills directly express FroggyBot’s niche and naturally produce its strongest outputs: itineraries, budgets, checklists, and shared decisions.
 
-### Retire or defer
+### Retire
 
 - **Browser Research:** retired from the current catalog because Researcher and Deep Research already choose the browser when navigation is required. It described an implementation method rather than a user outcome.
-- **X / Twitter Research and YouTube Research:** definitions remain in the repository, but their tools stay disabled until reviewed credentials and gateway targets are deployed. They should not appear as available in the website or app before then.
+
+YouTube Research is enabled after its reviewed credential, least-privilege schema, and AgentCore Gateway target passed a live call. X / Twitter Research is deployed and passed through AgentCore, but remains hidden because the X account exhausted its API credits during verification.
 
 No other skill should be removed until selection and completion telemetry can show persistent low value. Similar names alone are not enough evidence: Writer versus Editor and Analyst versus Data Analyst lead to meaningfully different outputs.
 
@@ -53,11 +54,11 @@ No other skill should be removed until selection and completion telemetry can sh
 - Focused Delegate: internal support for decomposed research
 - Code Interpreter: data analysis and generated tables or charts in a sandbox
 - Interactive Browser: multi-page and interactive research with approval before actions
+- YouTube Research: focused public video research through a credential-isolated AgentCore Gateway target
 
-### Keep disabled until deployed
+### Keep disabled until usable
 
-- X / Twitter Search
-- YouTube Research
+- X / Twitter Search: deployment is complete, but the X API account currently returns `402 credits depleted`
 
 ### Highest-value additions
 

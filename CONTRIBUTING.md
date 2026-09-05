@@ -72,6 +72,7 @@ Open the tool request before writing an OpenAPI definition. Include:
 - the smallest permissions that support the outcome.
 
 Tool proposals are listed only after their server-side binding has been security-reviewed, deployed, and tested. Community pull requests never add secrets.
+Accepted OpenAPI schemas live under `tools/<provider>/openapi.yaml`, and their catalog entry names that file with `schemaPath`. The site publishes these schemas for review; AWS deploys an immutable release copy from this repository.
 
 ## Run the checks
 

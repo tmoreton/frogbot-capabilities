@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "repository": "tmoreton/frogbot-skills",
-  "release": "skills-v6",
+  "release": "skills-v7",
   "tools": [
     {
       "id": "web",
@@ -67,6 +67,7 @@
       "tags": ["social", "search"],
       "actions": ["Search recent public posts"],
       "credential": "FrogBotXApi",
+      "schemaPath": "tools/x/openapi.yaml",
       "runtime": { "kind": "gateway", "operations": ["x_search_recent"] },
       "enabled": false
     },
@@ -81,11 +82,12 @@
       "tags": ["video", "comments"],
       "actions": ["Find videos", "Read video details", "Review comments"],
       "credential": "FrogBotYouTubeApi",
+      "schemaPath": "tools/youtube/openapi.yaml",
       "runtime": {
         "kind": "gateway",
         "operations": ["youtube_search", "youtube_video_details", "youtube_comments"]
       },
-      "enabled": false
+      "enabled": true
     },
     {
       "id": "task_list",

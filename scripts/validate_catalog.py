@@ -105,6 +105,15 @@ def main() -> int:
                 fail(f"{tool.get('id')} has an unsupported {kind} binding")
         else:
             fail(f"{tool.get('id')} has an unsupported runtime binding")
+        schema_path = tool.get("schemaPath")
+        credential = tool.get("credential")
+        if credential and not schema_path:
+            fail(f"{tool.get('id')} must name its reviewed OpenAPI schema")
+        if schema_path:
+            if not isinstance(schema_path, str) or not re.fullmatch(
+                r"tools/[a-z0-9-]+/openapi\.yaml", schema_path
+            ) or not (ROOT / schema_path).is_file():
+                fail(f"{tool.get('id')} schemaPath is invalid")
 
     skill_ids: set[str] = set()
     for skill in skills:
@@ -153,6 +162,16 @@ def main() -> int:
     orphaned = packaged_skill_ids - skill_ids
     if orphaned:
         fail(f"skill packages missing from catalog.json: {sorted(orphaned)}")
+
+    packaged_tool_schemas = {
+        str(path.relative_to(ROOT)) for path in (ROOT / "tools").glob("*/openapi.yaml")
+    }
+    listed_tool_schemas = {
+        tool["schemaPath"] for tool in tools if isinstance(tool.get("schemaPath"), str)
+    }
+    orphaned_schemas = packaged_tool_schemas - listed_tool_schemas
+    if orphaned_schemas:
+        fail(f"tool schemas missing from catalog.json: {sorted(orphaned_schemas)}")
 
     print(f"Validated {len(skills)} skills and {len(tools)} tools.")
     return 0

@@ -47,6 +47,15 @@ class SiteTests(unittest.TestCase):
         )
         self.assertEqual(published_skills, source_skills)
 
+    def test_build_publishes_every_tool_schema(self) -> None:
+        source_schemas = sorted(
+            path.relative_to(ROOT) for path in (ROOT / "tools").glob("*/openapi.yaml")
+        )
+        published_schemas = sorted(
+            path.relative_to(OUTPUT) for path in (OUTPUT / "tools").glob("*/openapi.yaml")
+        )
+        self.assertEqual(published_schemas, source_schemas)
+
 
 if __name__ == "__main__":
     unittest.main()

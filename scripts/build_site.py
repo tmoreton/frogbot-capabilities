@@ -7,6 +7,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "site"
 OUTPUT = ROOT / "dist"
+COPY_IGNORES = shutil.ignore_patterns(".DS_Store", "__pycache__")
 
 
 def main() -> None:
@@ -16,8 +17,9 @@ def main() -> None:
 
     if OUTPUT.exists():
         shutil.rmtree(OUTPUT)
-    shutil.copytree(SOURCE, OUTPUT)
-    shutil.copytree(ROOT / "skills", OUTPUT / "skills")
+    shutil.copytree(SOURCE, OUTPUT, ignore=COPY_IGNORES)
+    shutil.copytree(ROOT / "skills", OUTPUT / "skills", ignore=COPY_IGNORES)
+    shutil.copytree(ROOT / "tools", OUTPUT / "tools", ignore=COPY_IGNORES)
     shutil.copy2(ROOT / "catalog.json", OUTPUT / "catalog.json")
     (OUTPUT / ".nojekyll").touch()
     print(f"Built GitHub Pages site in {OUTPUT}")
